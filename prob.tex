@@ -1,0 +1,94 @@
+\section{Problem Setup}
+Consider the gradient descent to compute the minimum of a quadratic function given by $f(x)=\frac{1}x^\top A x-x^\top +c$ for some symmetric positive definite $n\times n$ matrix $A$, $b\in \R^n$ and $c\in\R^n$. The gradient $\nabla f(x)=b-Ax$
+\begin{align}\label{quad}
+x{t+1}=x_t+\alpha (b-Ax_t),
+\end{align}
+where $\alpha>0$ is a step-size. The Nesterov's acceleration that corresponds to the gradient descent algorithm \eqref{quad} is given by
+\begin{align}\label{accquad}
+\begin{split}
+y_{t+1}&=x_t+\alpha(\nabla f(x_t))\\
+x_{t+1}&=y_{t+1}+\delta_t(y_{t+1}-y_{t})
+\end{split}
+\end{align}
+where $\alpha>0$ is the step-size and $\delta_t>0$ is the acceleration co-efficient, since letting $\delta=0$ gives us back the unaccelerated version in \eqref{quad}. There are various choices of $\delta_t$ that haven been known to `accelerate' the vanilla gradient scheme in \eqref{quad}. We now re-write \eqref{accquad}, which will prove to be useful for our future discussions.
+\begin{align}\label{accquadrw}
+x_{t+1}&=y_{t+1}+\delta(x_{t}-x_{t-1}-\alpha(\nabla f(x_t)-\nabla f(x_{t-1}))),
+\end{align}
+where we have used the fact that a constant acceleration co-efficient $\delta_t=\delta>0$ is enough to gaurantee acceleration in the linear case.
+Taking a cue from \eqref{quad}, we consider the general case, where $A$ is any $n\times n$ \emph{positive} matrix which we define as follows
+\begin{definition}\label{pos}
+An $n\times n$ matrix $A$ is said to be positive if all its eigen values have positive real parts.
+\end{definition}
+In such a case $F(x)=b-Ax$ is just a general flow field and not a necessarily a gradient of some function. We would like to understand whether or not Nestrov type acceleration can happen in such a scenario. To this end we consider the following iterative scheme which we call the generalized Nesterov's acceleration (GNE):
+\begin{align}\label{accgen}
+x_{t+1}=x_t+\alpha(b-Ax_t)+\delta_t (x_t-x_{t-1}-\beta(F(x_t)-F(x_{t-1})) )
+\end{align}
+Notice that \eqref{accgen} is generalized in that \eqref{accquadrw} can be recovered by letting $\beta=\alpha$ and $F(x)=\nabla f(x)$ in \eqref{accgen} (when we are dealing with a gradient system).
+\par
+We can re-write \eqref{accgen} in the matrix form as below
+\begin{align}\label{accgenmat}
+\begin{bmatrix} x_{t+1} \\ x_t\\\end{bmatrix}= \begin{bmatrix} (1+\delta)I-\alpha A-\beta\delta A & \delta I+\beta \deltaA \\ I &0\\\end{bmatrix} \begin{bmatrix} x_{t} \\ x_{t-1}\\\end{bmatrix}+ \begin{bmatrix} \alpha b \\ 0\\\end{bmatrix}
+\end{align}
+
+\subsection{Improved Rate of Convergence}
+First we derive conditions under which the \eqref{quad} converges when $A$ is a positive matrix. To this end, we first assume that there exists an $x^*$ such that $b-Ax^*=0$ and define the error at time $t$ to be $e_t\eqdef x_t-\xs$. Then the error dynamics of \eqref{quad} and \eqref{accgen} can be written respectively as
+\begin{align}\label{errquad}
+e_{t+1}=M e_{t}, ~e_t \in \R^n
+\end{align}
+where $M(\alpha)=I-\alpha A$
+and
+\begin{align}\lable{erraccgen}
+e_{t+1}=M_{acc} e_{t},  ~e_t =(x_t,x_{t-1}) \in \R^{2n}
+\end{align}
+where $M^{acc}_{\alpha,\beta,\delta}=\begin{bmatrix} (1+\delta)I-\alpha A-\beta\delta A & \delta I+\beta \deltaA \\ I &0\\\end{bmatrix}$.\par
+The rate of convergence of iterative schemes depend on the spectra of matrices $I-\alpha A$ and $M(\alpha,\beta,\delta)$ respectively, which we understand in the following series of lemmas and theorems. In what follows we use $\rho_{M_{\alpha}}$ and $\rho_{M^{acc}_{\alpha,\beta,\delta}}$ to denote the spectral radius of $M_\alpha$ and $M^{acc}_{\alpha,\beta,\delta}$ respectively.
+\begin{lemma}
+For $A$ positive be a positive matrix as defined in \Cref{pos}, then there exists an $\alpha>0$ such that $\rho_{M_\alpha}<1$.
+\end{\lemma}
+\begin{proof}
+Let $\mu_j=a_j+ib_j$ (the arguments are similar for the complex conjugate) be an eigen value, then it follows that $1-\alpha \mu_j=(1-\alpha a)- i\alpha b $ is an Eigen value of $M_{\alpha}$. Now for \eqref{errquad} to converge to $0$ we need, $|1-\alpha\mu_j|<1$, which translates to the condition
+\begin{align}
+0<\alpha<\frac{2 a_j}{(a_j^2+b_j^2)}
+\end{align}
+The result holds for any $\alpha<\min_{i=1,\ldots,k}\frac{2 a_j}{(a_j^2+b_j^2)}$.
+\end{proof}
+We now state our main result
+\begin{theorem}
+For any $\alpha>0$ such that $\rho_M_{\alpha}<1$, there exist $\beta>0$ and $\delta>0$ such that $\rho_{M^{acc}_{\alpha,\beta,\delta}}<\rho_{M_\alpha}<1$
+\end{theorem}
+\begin{proof}
+Let $\mu=a+ib$ be any Eigen value of $A$ and let $\lambda$ be any Eigen value of $M^{acc}_{\alpha,\beta,\delta}$. It follows that $\lambda$ satisfies
+\begin{align}\label{poly}
+\lambda \Big(\lambda- \big((1+\delta)-(\alpha+\beta)(\mu) \big) \Big)+ \delta-\beta\delta \mu=0
+\end{align}
+Writing down the roots of the polynomial above we have
+\begin{align}
+\lambda=\frac{(1-\alpha \mu)+\delta (1-\beta\mu)\pm \sqrt{(1-\alpha \mu)+\delta (1-\beta\mu)^2-4\delta(1-\beta\mu)}}{2}
+\end{align}
+Computing the discriminant for small values of $\delta$ we have
+\begin{align}
+\begin{split}
+(1-\alpha\mu)^2+2\delta(1-\beta \mu)-4\delta(1-\beta\mu)\\
+=(1-\alpha\mu)^2-2\delta(1-beta\mu)(1+\alpha\mu)\\
+\sqrt\Delta\approx(1-\alpha\mu)^2-\frac{2\delta(1-beta\mu)(1+\alpha\mu)}{(1-\alpha\mu)}
+\end{split}
+\end{align}
+\begin{align}
+\lambda=\frac{(1-\alpha\mu)+\delta(1-\beta\mu)\pm(1-\alpha\mu)-\mp\frac{2\delta(1-beta\mu)(1+\alpha\mu)}{(1-\alpha\mu)}}{2}
+\lambda=\frac{(1-\alpha\mu)\pm(1-\alpha\mu)}{2} +\frac{\delta}{2}(1-\beta\mu)[1-\mp\frac{(1+\alpha\mu)}{1-\alpha \mu}]\\
+\lambda=(1-\alpha\mu)-\delta\alpha\mu\frac{(1-\beta\mu)}{1-\alpha\mu}, 2\delta\frac{(1-\beta\mu)}{(1-\alpha \mu)}
+\end{align}
+Looking at the Eigen value with largest modulus, we have
+\begin{align}
+\lambda=1-\alpha\mu-\delta\alpha\mu\frac{1-\beta\mu}{1-\alpha \mu}
+\end{align}
+We need to ensure $\mu\frac{1-\beta\mu}{1-\alpha \mu}$ is real.
+\begin{align}
+
+\end{align}
+
+\end{proof}
+
+
+
+
