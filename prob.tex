@@ -1,5 +1,5 @@
 \section{Problem Setup}
-Consider the gradient descent to compute the minimum of a quadratic function given by $f(x)=\frac{1}x^\top A x-x^\top +c$ for some symmetric positive definite $n\times n$ matrix $A$, $b\in \R^n$ and $c\in\R^n$. The gradient $\nabla f(x)=b-Ax$
+Consider the gradient descent to compute the minimum of a quadratic function given by $f(x)=\frac{1}{2}x^\top A x-x^\top +c$ for some symmetric positive definite $n\times n$ matrix $A$, $b\in \R^n$ and $c\in\R^n$. The gradient $\nabla f(x)=b-Ax$
 \begin{align}\label{quad}
 x{t+1}=x_t+\alpha (b-Ax_t),
 \end{align}
@@ -27,7 +27,7 @@ Notice that \eqref{accgen} is generalized in that \eqref{accquadrw} can be recov
 \par
 We can re-write \eqref{accgen} in the matrix form as below
 \begin{align}\label{accgenmat}
-\begin{bmatrix} x_{t+1} \\ x_t\\\end{bmatrix}= \begin{bmatrix} (1+\delta)I-\alpha A-\beta\delta A & \delta I+\beta \deltaA \\ I &0\\\end{bmatrix} \begin{bmatrix} x_{t} \\ x_{t-1}\\\end{bmatrix}+ \begin{bmatrix} \alpha b \\ 0\\\end{bmatrix}
+\begin{bmatrix} x_{t+1} \\ x_t\\\end{bmatrix}= \begin{bmatrix} (1+\delta)I-\alpha A-\beta\delta A & \delta I+\beta \delta A \\ I &0\\\end{bmatrix} \begin{bmatrix} x_{t} \\ x_{t-1}\\\end{bmatrix}+ \begin{bmatrix} \alpha b \\ 0\\\end{bmatrix}
 \end{align}
 
 \subsection{Improved Rate of Convergence}
