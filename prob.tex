@@ -16,9 +16,9 @@ x_{t+1}&=y_{t+1}+\delta(x_{t}-x_{t-1}-\alpha(\nabla f(x_t)-\nabla f(x_{t-1}))),
 \end{align}
 where we have used the fact that a constant acceleration co-efficient $\delta_t=\delta>0$ is enough to gaurantee acceleration in the linear case.
 Taking a cue from \eqref{quad}, we consider the general case, where $A$ is any $n\times n$ \emph{positive} matrix which we define as follows
-\begin{definition}\label{pos}
+\begin{assumption}\label{pos}
 An $n\times n$ matrix $A$ is said to be positive if all its eigen values have positive real parts.
-\end{definition}
+\end{assumption}
 In such a case $F(x)=b-Ax$ is just a general flow field and not a necessarily a gradient of some function. We would like to understand whether or not Nestrov type acceleration can happen in such a scenario. To this end we consider the following iterative scheme which we call the generalized Nesterov's acceleration (GNE):
 \begin{align}\label{accgen}
 x_{t+1}=x_t+\alpha(b-Ax_t)+\delta_t (x_t-x_{t-1}-\beta(F(x_t)-F(x_{t-1})) )
@@ -37,14 +37,14 @@ e_{t+1}=M e_{t}, ~e_t \in \R^n
 \end{align}
 where $M(\alpha)=I-\alpha A$
 and
-\begin{align}\lable{erraccgen}
+\begin{align}\label{erraccgen}
 e_{t+1}=M_{acc} e_{t},  ~e_t =(x_t,x_{t-1}) \in \R^{2n}
 \end{align}
-where $M^{acc}_{\alpha,\beta,\delta}=\begin{bmatrix} (1+\delta)I-\alpha A-\beta\delta A & \delta I+\beta \deltaA \\ I &0\\\end{bmatrix}$.\par
+where $M^{acc}_{\alpha,\beta,\delta}=\begin{bmatrix} (1+\delta)I-\alpha A-\beta\delta A & \delta I+\beta \delta A \\ I &0\\\end{bmatrix}$.\par
 The rate of convergence of iterative schemes depend on the spectra of matrices $I-\alpha A$ and $M(\alpha,\beta,\delta)$ respectively, which we understand in the following series of lemmas and theorems. In what follows we use $\rho_{M_{\alpha}}$ and $\rho_{M^{acc}_{\alpha,\beta,\delta}}$ to denote the spectral radius of $M_\alpha$ and $M^{acc}_{\alpha,\beta,\delta}$ respectively.
 \begin{lemma}
 For $A$ positive be a positive matrix as defined in \Cref{pos}, then there exists an $\alpha>0$ such that $\rho_{M_\alpha}<1$.
-\end{\lemma}
+\end{lemma}
 \begin{proof}
 Let $\mu_j=a_j+ib_j$ (the arguments are similar for the complex conjugate) be an eigen value, then it follows that $1-\alpha \mu_j=(1-\alpha a)- i\alpha b $ is an Eigen value of $M_{\alpha}$. Now for \eqref{errquad} to converge to $0$ we need, $|1-\alpha\mu_j|<1$, which translates to the condition
 \begin{align}
@@ -54,7 +54,7 @@ The result holds for any $\alpha<\min_{i=1,\ldots,k}\frac{2 a_j}{(a_j^2+b_j^2)}$
 \end{proof}
 We now state our main result
 \begin{theorem}
-For any $\alpha>0$ such that $\rho_M_{\alpha}<1$, there exist $\beta>0$ and $\delta>0$ such that $\rho_{M^{acc}_{\alpha,\beta,\delta}}<\rho_{M_\alpha}<1$
+For any $\alpha>0$ such that $\rho_{M_{\alpha}}<1$, there exist $\beta>0$ and $\delta>0$ such that $\rho_{M^{acc}_{\alpha,\beta,\delta}}<\rho_{M_\alpha}<1$
 \end{theorem}
 \begin{proof}
 Let $\mu=a+ib$ be any Eigen value of $A$ and let $\lambda$ be any Eigen value of $M^{acc}_{\alpha,\beta,\delta}$. It follows that $\lambda$ satisfies
@@ -83,9 +83,6 @@ Looking at the Eigen value with largest modulus, we have
 \lambda=1-\alpha\mu-\delta\alpha\mu\frac{1-\beta\mu}{1-\alpha \mu}
 \end{align}
 We need to ensure $\mu\frac{1-\beta\mu}{1-\alpha \mu}$ is real.
-\begin{align}
-
-\end{align}
 
 \end{proof}
 
